@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# runs the compiler project
+
+java -cp classes:lib/antlr-4.8-complete.jar Compiler $1 > $2
+
+

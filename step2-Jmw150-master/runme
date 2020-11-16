@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# run compiler
-java -cp classes:lib/antlr-4.8-complete.jar compiler.Compiler $1 > $2
-

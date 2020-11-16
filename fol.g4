@@ -1,40 +1,18 @@
+// A grammar for first order language, as defined in "Introduction to Mathematical Logic" by Elliot Mendelson.
+
 grammar fol;
 
-@header {
-    package compiler;
+/* parser stuff */
 
-    import java.util.List;
-    import java.util.LinkedList;
-    import ast.*;
- 
-}
+// wffs as the starting point, instead of the alphabet
+program : wffs ;
 
-@members {
-     private SymbolTable st; //Symbol table for the program
-     private ASTNode ast;    //AST for the program
-
-     public void setSymbolTable(SymbolTable st) {
-          this.st = st;
-     }
-
-     public SymbolTable getSymbolTable() {
-          return st;
-     }
-
-
-     public ASTNode getAST() {
-          return ast;
-     }
-}
-
-/* wffs as the starting point */
-program : wffs {ast = $wffs.node;} ;
-
+// one or more wffs
 wffs : wff wffs 
      | ;
 
-wff returns [StatementListNode node] : 
-      '(' '(' '\\forall' variable ')' wff ')'
+// following tex syntax for symbols
+wff : '(' '(' '\\forall' variable ')' wff ')'
     | '\\lnot' '(' wff ')' 
     | '(' wff '\\Rightarrow' wff ')' 
     | atomic_formula ;
@@ -53,20 +31,21 @@ letter : function
        | variable 
        | constant ;
 
-predicate : 'A_' NUMBER '^' NUMBER ;
-function : 'f_' NUMBER '^' NUMBER ; 
-variable : 'x_' NUMBER;
-constant : 'a_' NUMBER;
+predicate : 'A' '_' NUMBER '^' NUMBER ;
+function : 'f' '_' NUMBER '^' NUMBER ; 
+variable : 'x' '_' NUMBER;
+constant : 'a' '_' NUMBER;
 
 
-/* Lexer stuff */
+/* Lexer stuff, for efficiency */
 
-NUMBER : DIGIT+;  /* natural NUMBERs, naturally */
+// natural NUMBERs, naturally
+NUMBER : DIGIT+;  
 
-/* document your proofs! */
+// for proof documentation
 COMMENT : '/*' .*? '*/' -> skip; 
 
-/* ignore whitespace */
+// ignore whitespace 
 WS : [ \t\n\r]+ -> skip; 
 
 fragment DIGIT : ('0'..'9') ;

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-for i in {0..7}
-do
-    echo "test$i.out"
-    ./runme tests/test$i.fol testout.out
-    cat testout.out > outputs/test$i.out
-done
