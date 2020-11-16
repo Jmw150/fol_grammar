@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in {0..10}
+do
+    echo "test$i.asm"
+    ./runme tests/test$i.uC testout.out
+    diff testout.out outputs/test$i.asm
+done
